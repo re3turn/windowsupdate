@@ -44,7 +44,8 @@ func toIUpdateSession(updateSessionDisp *ole.IDispatch) (*IUpdateSession, error)
 
 	webProxyDisp, err := toIDispatchErr(oleutil.GetProperty(updateSessionDisp, "WebProxy"))
 	if err != nil {
-		return nil, err
+		// WebProxy property may not exist in EC2 instances
+		return iUpdateSession, err
 	}
 	if webProxyDisp != nil {
 		if iUpdateSession.WebProxy, err = toIWebProxy(webProxyDisp); err != nil {
